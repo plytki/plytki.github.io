@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Teoretyczny - Naiwny Klasyfikator Bayesowski</title>
+</head>
+<body>
+    <h1>Test Teoretyczny - Naiwny Klasyfikator Bayesowski</h1>
+    
+    <form>
+        <h2>Pytanie 1:</h2>
+        <p>W klasyfikatorze naiwnego Bayesa, zakłada się, że:</p>
+        <input type="checkbox" id="q1a" name="q1" value="A">
+        <label for="q1a">A) Wszystkie atrybuty są parami niezależne.</label><br>
+        <input type="checkbox" id="q1b" name="q1" value="B">
+        <label for="q1b">B) Wszystkie atrybuty są ze sobą skorelowane.</label><br>
+        <input type="checkbox" id="q1c" name="q1" value="C">
+        <label for="q1c">C) P(X = x) jest równe dla wszystkich wartości y.</label><br>
+        <input type="checkbox" id="q1d" name="q1" value="D">
+        <label for="q1d">D) Można zignorować P(X = x) przy obliczaniu P(Y = y | X = x).</label><br>
+        
+        <h2>Pytanie 2:</h2>
+        <p>W przypadku braku występowania kombinacji atrybutów w zbiorze treningowym, stosuje się:</p>
+        <input type="checkbox" id="q2a" name="q2" value="A">
+        <label for="q2a">A) Normalizację</label><br>
+        <input type="checkbox" id="q2b" name="q2" value="B">
+        <label for="q2b">B) Standaryzację</label><br>
+        <input type="checkbox" id="q2c" name="q2" value="C">
+        <label for="q2c">C) Wygładzanie</label><br>
+        <input type="checkbox" id="q2d" name="q2" value="D">
+        <label for="q2d">D) Skalowanie</label><br>
+        
+        <h2>Pytanie 3:</h2>
+        <p>Jeżeli w zbiorze uczącym nie występuje przypadek z wartościami \(X_j = x_j\) oraz \(Y = y\), oszacowane prawdopodobieństwo wynosiłoby:</p>
+        <input type="checkbox" id="q3a" name="q3" value="A">
+        <label for="q3a">A) Jeden</label><br>
+        <input type="checkbox" id="q3b" name="q3" value="B">
+        <label for="q3b">B) Nieskończoność</label><br>
+        <input type="checkbox" id="q3c" name="q3" value="C">
+        <label for="q3c">C) Zero</label><br>
+        <input type="checkbox" id="q3d" name="q3" value="D">
+        <label for="q3d">D) Nie zmienia się</label><br>
+        
+        <h2>Pytanie 4:</h2>
+        <p>W najprostszym rodzaju wygładzania, do licznika proporcji dla danego atrybutu dodajemy:</p>
+        <input type="checkbox" id="q4a" name="q4" value="A">
+        <label for="q4a">A) Zawsze jeden</label><br>
+        <input type="checkbox" id="q4b" name="q4" value="B">
+        <label for="q4b">B) Zero</label><br>
+        <input type="checkbox" id="q4c" name="q4" value="C">
+        <label for="q4c">C) Średnią wartość atrybutu</label><br>
+        <input type="checkbox" id="q4d" name="q4" value="D">
+        <label for="q4d">D) Wartość maksymalną atrybutu</label><br>
+        
+        <h2>Pytanie 5:</h2>
+        <p>Wzór Bayesa wykorzystywany w klasyfikatorze naiwnego Bayesa ma postać:</p>
+        <input type="checkbox" id="q5a" name="q5" value="A">
+        <label for="q5a">A) \(P(Y = y |X = x) = \frac{P(X = x |Y = y)P(Y = y)}{P(X = x)}\)</label><br>
+        <input type="checkbox" id="q5b" name="q5" value="B">
+        <label for="q5b">B) \(P(Y = y |X = x) = P(X = x |Y = y)P(Y = y)\)</label><br>
+        <input type="checkbox" id="q5c" name="q5" value="C">
+        <label for="q5c">C) \(P(X = x |Y = y) = \frac{P(Y = y |X = x)P(X = x)}{P(Y = y)}\)</label><br>
+        <input type="checkbox" id="q5d" name="q5" value="D">
+        <label for="q5d">D) \(P(X = x |Y = y) = P(Y = y |X = x)P(X = x)\)</label><br>
+        
+        <h2>Pytanie 6:</h2>
+        <p>W klasyfikatorze naiwnego Bayesa, aby wybrać odpowiednią klasę, należy:</p>
+        <input type="checkbox" id="q6a" name="q6" value="A">
+        <label for="q6a">A) Obliczyć prawdopodobieństwo dla każdej klasy i wybrać największe</label><br>
+        <input type="checkbox" id="q6b" name="q6" value="B">
+        <label for="q6b">B) Obliczyć średnią z prawdopodobieństw dla każdej klasy</label><br>
+        <input type="checkbox" id="q6c" name="q6" value="C">
+        <label for="q6c">C) Wybrać klasę z najmniejszym prawdopodobieństwem</label><br>
+        <input type="checkbox" id="q6d" name="q6" value="D">
+        <label for="q6d">D) Zignorować klasy z najmniejszym prawdopodobieństwem</label><br>
+        
+        <h2>Pytanie 7:</h2>
+        <p>W przykładzie outdoor game, jaki wynik klasyfikacji uzyskamy dla przypadku: 'sunny, mild, normal, true' przy użyciu klasyfikatora naiwnego Bayesa (bazując na danych treningowych z pliku)?</p>
+        <input type="checkbox" id="q7a" name="q7" value="A">
+        <label for="q7a">A) yes</label><br>
+        <input type="checkbox" id="q7b" name="q7" value="B">
+        <label for="q7b">B) no</label><br>
+        <input type="checkbox" id="q7c" name="q7" value="C">
+        <label for="q7c">C) maybe</label><br>
+        <input type="checkbox" id="q7d" name="q7" value="D">
+        <label for="q7d">D) unknown</label><br>
+        
+        <h2>Pytanie 8:</h2>
+        <p>W klasyfikatorze naiwnego Bayesa, prawdopodobieństwo P(Y = y) oznacza:</p>
+        <input type="checkbox" id="q8a" name="q8" value="A">
+        <label for="q8a">A) Proporcję przypadków mających wartość atrybutu decyzyjnego Y = y w zbiorze treningowym</label><br>
+        <input type="checkbox" id="q8b" name="q8" value="B">
+        <label for="q8b">B) Proporcję przypadków mających wartość atrybutu Xi = xi wśród przypadków mających wartość atrybutu decyzyjnego Y = y</label><br>
+        <input type="checkbox" id="q8c" name="q8" value="C">
+        <label for="q8c">C) Proporcję przypadków mających wartość atrybutu Xi = xi w całym zbiorze</label><br>
+        <input type="checkbox" id="q8d" name="q8" value="D">
+        <label for="q8d">D) Liczbę wszystkich przypadków w zbiorze treningowym</label><br>
+        
+        <br><input type="submit" value="Zatwierdź odpowiedzi">
+    </form>
+</body>
+</html>
