@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test teoretyczny - Sieci Neuronowe</title>
+</head>
+<body>
+    <h1>Test teoretyczny - Sieci Neuronowe</h1>
+
+    <form id="quiz">
+
+        <h2>1. Jaka jest funkcja sigmoidalna unipolarna?</h2>
+        <input type="checkbox" id="q1a" name="q1" value="A">
+        <label for="q1a">A) \( f(net) = \frac{1}{1 + e^{-net}} \)</label><br>
+        <input type="checkbox" id="q1b" name="q1" value="B">
+        <label for="q1b">B) \( f(net) = \frac{2}{1 + e^{-net}} - 1 \)</label><br>
+        <input type="checkbox" id="q1c" name="q1" value="C">
+        <label for="q1c">C) \( f(net) = net \)</label><br>
+        <input type="checkbox" id="q1d" name="q1" value="D">
+        <label for="q1d">D) \( f(net) = e^{-net} \)</label><br>
+        <p>Poprawne odpowiedzi: A</p>
+
+        <h2>2. Jak definiuje się błąd neuronu ciągłego?</h2>
+        <input type="checkbox" id="q2a" name="q2" value="A">
+        <label for="q2a">A) \( E = \frac{1}{2} (d - y)^2 \)</label><br>
+        <input type="checkbox" id="q2b" name="q2" value="B">
+        <label for="q2b">B) \( E = (d - y) \)</label><br>
+        <input type="checkbox" id="q2c" name="q2" value="C">
+        <label for="q2c">C) \( E = (d - y)^2 \)</label><br>
+        <input type="checkbox" id="q2d" name="q2" value="D">
+        <label for="q2d">D) \( E = \frac{1}{2} (d + y)^2 \)</label><br>
+        <p>Poprawne odpowiedzi: A</p>
+
+        <h2>3. Jakie są pochodne funkcji sigmoidalnej unipolarnej?</h2>
+        <input type="checkbox" id="q3a" name="q3" value="A">
+        <label for="q3a">A) \( f'(net) = f(net)(1 - f(net)) \)</label><br>
+        <input type="checkbox" id="q3b" name="q3" value="B">
+        <label for="q3b">B) \( f'(net) = 1 - f^2(net) \)</label><br>
+        <input type="checkbox" id="q3c" name="q3" value="C">
+        <label for="q3c">C) \( f'(net) = y(1 - y) \)</label><br>
+        <input type="checkbox" id="q3d" name="q3" value="D">
+        <label for="q3d">D) \( f'(net) = (1 - y^2) \)</label><br>
+        <p>Poprawne odpowiedzi: A, C</p>
+
+        <h2>4. Która z poniższych reguł uczenia dotyczy neuronu ciągłego unipolarnego?</h2>
+        <input type="checkbox" id="q4a" name="q4" value="A">
+        <label for="q4a">A) \( w_{new} = w_{old} + \eta (d - y) y (1 - y) x \)</label><br>
+        <input type="checkbox" id="q4b" name="q4" value="B">
+        <label for="q4b">B) \( w_{new} = w_{old} + \frac{1}{2} \eta (d - y) (1 - y^2) x \)</label><br>
+        <input type="checkbox" id="q4c" name="q4" value="C">
+        <label for="q4c">C) \( w_{new} = w_{old} - \eta (d - y) x \)</label><br>
+        <input type="checkbox" id="q4d" name="q4" value="D">
+        <label for="q4d">D) \( w_{new} = w_{old} \)</label><br>
+        <p>Poprawne odpowiedzi: A</p>
+
+        <h2>5. Jak zmienia się waga pojedynczego neuronu w jednowarstwowej sieci neuronów?</h2>
+        <input type="checkbox" id="q5a" name="q5" value="A">
+        <label for="q5a">A) \( \Delta w_{kj} = -\eta \frac{\partial E}{\partial w_{kj}} \)</label><br>
+        <input type="checkbox" id="q5b" name="q5" value="B">
+        <label for="q5b">B) \( \Delta w_{kj} = \eta \frac{\partial E}{\partial w_{kj}} \)</label><br>
+        <input type="checkbox" id="q5c" name="q5" value="C">
+        <label for="q5c">C) \( \Delta w_{kj} = \eta (d - z) \)</label><br>
+        <input type="checkbox" id="q5d" name="q5" value="D">
+        <label for="q5d">D) \( \Delta w_{kj} = -\eta y (1 - y) \)</label><br>
+        <p>Poprawne odpowiedzi: A</p>
+
+        <h2>6. Jakie oznaczenie stosuje się dla wektora wejść w dwuwarstwowej sieci neuronowej?</h2>
+        <input type="checkbox" id="q6a" name="q6" value="A">
+        <label for="q6a">A) \( y^T = (y_1, \ldots, y_J) \)</label><br>
+        <input type="checkbox" id="q6b" name="q6" value="B">
+        <label for="q6b">B) \( x^T = (x_1, \ldots, x_I) \)</label><br>
+        <input type="checkbox" id="q6c" name="q6" value="C">
+        <label for="q6c">C) \( z^T = (z_1, \ldots, z_K) \)</label><br>
+        <input type="checkbox" id="q6d" name="q6" value="D">
+        <label for="q6d">D) \( d^T = (d_1, \ldots, d_K) \)</label><br>
+        <p>Poprawne odpowiedzi: B</p>
+
+        <h2>7. Na czym polega metoda wstecznej propagacji błędów?</h2>
+        <input type="checkbox" id="q7a" name="q7" value="A">
+        <label for="q7a">A) Modyfikacja wag od pierwszej do ostatniej warstwy.</label><br>
+        <input type="checkbox" id="q7b" name="q7" value="B">
+        <label for="q7b">B) Modyfikacja wag od ostatniej do pierwszej warstwy.</label><br>
+        <input type="checkbox" id="q7c" name="q7" value="C">
+        <label for="q7c">C) Modyfikacja wag losowo.</label><br>
+        <input type="checkbox" id="q7d" name="q7" value="D">
+        <label for="q7d">D) Nie modyfikowanie wag w ogóle.</label><br>
+        <p>Poprawne odpowiedzi: B</p>
+
+        <h2>8. Jakie są warunki zakończenia algorytmu uczenia dwuwarstwowej sieci neuronowej?</h2>
+        <input type="checkbox" id="q8a" name="q8" value="A">
+        <label for="q8a">A) Gdy błąd \( E < E_{max} \).</label><br>
+        <input type="checkbox" id="q8b" name="q8" value="B">
+        <label for="q8b">B) Po przejściu wszystkich elementów zbioru uczącego.</label><br>
+        <input type="checkbox" id="q8c" name="q8" value="C">
+        <label for="q8c">C) Gdy liczba epok przekroczy maksymalną wartość.</label><br>
+        <input type="checkbox" id="q8d" name="q8" value="D">
+        <label for="q8d">D) Gdy współczynnik uczenia osiągnie zero.</label><br>
+        <p>Poprawne odpowiedzi: A, B</p>
+
+    </form>
+</body>
+</html>
