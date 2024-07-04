@@ -1177,93 +1177,104 @@
             return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
         }
 
-        // Load questions into the form
-        function loadQuestions() {
-            const selectedQuestions = getRandomQuestions(questions, 20);
-            const form = document.getElementById('testForm');
+// Load questions into the form
+function loadQuestions() {
+    const selectedQuestions = getRandomQuestions(questions, 20);
+    const form = document.getElementById('testForm');
 
-            selectedQuestions.forEach((q, index) => {
-                q.options = getRandomOptions(q.options, q.answer, 4); // Ensure 4 options including correct answers
+    selectedQuestions.forEach((q, index) => {
+        q.options = getRandomOptions(q.options, q.answer, 4); // Ensure 4 options including correct answers
 
-                let questionDiv = document.createElement('div');
-                questionDiv.className = 'form-group';
+        let questionDiv = document.createElement('div');
+        questionDiv.className = 'form-group';
 
-                let label = document.createElement('label');
-                label.innerHTML = `${index + 1}. ${q.question}`; // htmlEncode is not needed for the question as it already contains HTML formatting
-                questionDiv.appendChild(label);
+        let label = document.createElement('label');
+        label.innerHTML = `${index + 1}. ${q.question}`; // htmlEncode is not needed for the question as it already contains HTML formatting
+        questionDiv.appendChild(label);
 
-                q.options.forEach((option, optIndex) => {
-                    let div = document.createElement('div');
-                    div.className = 'option-div';
+        q.options.forEach((option, optIndex) => {
+            let div = document.createElement('div');
+            div.className = 'option-div';
 
-                    let input = document.createElement('input');
-                    input.type = 'checkbox';
-                    input.name = `question${index}`;
-                    input.value = option;
-                    input.id = `question${index}_option${optIndex}`;
+            let input = document.createElement('input');
+            input.type = 'checkbox';
+            input.name = `question${index}`;
+            input.value = option;
+            input.id = `question${index}_option${optIndex}`;
 
-                    let optionLabel = document.createElement('label');
-                    optionLabel.htmlFor = input.id;
-                    optionLabel.innerHTML = htmlEncode(option);
+            let optionLabel = document.createElement('label');
+            optionLabel.htmlFor = input.id;
+            optionLabel.innerHTML = htmlEncode(option);
 
-                    div.appendChild(input);
-                    div.appendChild(optionLabel);
-                    questionDiv.appendChild(div);
+            div.appendChild(input);
+            div.appendChild(optionLabel);
+            questionDiv.appendChild(div);
 
-                    // Add click event listener to the optionDiv
-                    div.addEventListener('click', () => {
-                        input.checked = !input.checked;
-                    });
-                });
-
-                form.appendChild(questionDiv);
-            });
-        }
-
-        // Check answers and display results
-        function checkAnswers() {
-            const form = document.getElementById('testForm');
-            const inputs = form.querySelectorAll('input[type="checkbox"]');
-            const results = document.getElementById('results');
-            let correctAnswers = 0;
-
-            const selectedQuestions = Array.from(form.querySelectorAll('.form-group')).map((group, index) => {
-                const questionLabel = group.querySelector('label').innerHTML.split('. ')[1];
-                return questions.find(q => q.question.includes(questionLabel));
-            });
-
-            selectedQuestions.forEach((q, index) => {
-                const questionDiv = form.getElementsByClassName('form-group')[index];
-                const selectedOptions = Array.from(inputs).filter(input => input.name === `question${index}` && input.checked);
-                const selectedValues = selectedOptions.map(option => option.value);
-                if (!q || !q.answer) return; // Ensure q and q.answer are defined
-                const isCorrect = selectedValues.length === q.answer.length && selectedValues.every(val => q.answer.includes(val));
-                if (isCorrect) {
-                    correctAnswers++;
-                    selectedOptions.forEach(option => option.parentElement.classList.add('correct'));
-                } else {
-                    selectedOptions.forEach(option => option.parentElement.classList.add('incorrect'));
+            // Add click event listener to the optionDiv
+            div.addEventListener('click', () => {
+                if (!input.disabled) {
+                    input.checked = !input.checked;
                 }
-                q.options.forEach(option => {
-                    if (q.answer.includes(option)) {
-                        const input = Array.from(inputs).find(input => input.value === option && input.name === `question${index}`);
-                        if (input) {
-                            input.parentElement.classList.add('correct');
-                        }
-                    }
-                });
             });
+        });
 
-            // Disable the button
-            document.querySelector('button').disabled = true;
+        form.appendChild(questionDiv);
+    });
+}
 
-            // Display the score
-            const totalQuestions = selectedQuestions.length;
-            const percentage = (correctAnswers / totalQuestions) * 100;
-            results.innerHTML = `<div><strong>Score: ${correctAnswers}/${totalQuestions} (${percentage.toFixed(2)}%)</strong></div>`;
+// Check answers and display results
+function checkAnswers() {
+    const form = document.getElementById('testForm');
+    const inputs = form.querySelectorAll('input[type="checkbox"]');
+    const results = document.getElementById('results');
+    let correctAnswers = 0;
+
+    const selectedQuestions = Array.from(form.querySelectorAll('.form-group')).map((group, index) => {
+        const questionLabel = group.querySelector('label').innerHTML.split('. ')[1];
+        return questions.find(q => q.question.includes(questionLabel));
+    });
+
+    selectedQuestions.forEach((q, index) => {
+        const questionDiv = form.getElementsByClassName('form-group')[index];
+        const selectedOptions = Array.from(inputs).filter(input => input.name === `question${index}` && input.checked);
+        const selectedValues = selectedOptions.map(option => option.value);
+        if (!q || !q.answer) return; // Ensure q and q.answer are defined
+        const isCorrect = selectedValues.length === q.answer.length && selectedValues.every(val => q.answer.includes(val));
+
+        if (isCorrect) {
+            correctAnswers++;
+            selectedOptions.forEach(option => option.parentElement.classList.add('correct'));
+        } else {
+            selectedOptions.forEach(option => {
+                if (!q.answer.includes(option.value)) {
+                    option.parentElement.classList.add('incorrect');
+                }
+            });
         }
 
-        window.onload = loadQuestions;
+        q.options.forEach(option => {
+            const input = Array.from(inputs).find(input => input.value === option && input.name === `question${index}`);
+            if (input && q.answer.includes(option)) {
+                input.parentElement.classList.add('correct');
+            }
+        });
+    });
+
+    // Disable the checkboxes
+    inputs.forEach(input => input.disabled = true);
+
+    // Disable the button
+    document.querySelector('button').disabled = true;
+
+    // Display the score
+    const totalQuestions = selectedQuestions.length;
+    const percentage = (correctAnswers / totalQuestions) * 100;
+    results.innerHTML = `<div><strong>Score: ${correctAnswers}/${totalQuestions} (${percentage.toFixed(2)}%)</strong></div>`;
+}
+
+window.onload = loadQuestions;
+
+
 </script>
 </body>
 </html>
