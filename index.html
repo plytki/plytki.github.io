@@ -2,24 +2,71 @@
 <html lang="pl">
 <head>
     <meta charset="UTF-8">
-    <title>Testy Teoretyczne ze Sztucznej Inteligencji</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Testy Teoretyczne</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .test-links {
+            display: none;
+        }
+    </style>
 </head>
 <body>
-    <h1>Testy Teoretyczne ze Sztucznej Inteligencji</h1>
-    <p>Wybierz test, który chcesz rozwiązać:</p>
-    <ul>
-        <li><a href="wyklad1.html">Test - Wyklad 1</a></li>
-        <li><a href="wyklad2.html">Test - Wyklad 2</a></li>
-        <li><a href="wyklad3.html">Test - Wyklad 3</a></li>
-        <li><a href="wyklad4.html">Test - Wyklad 4</a></li>
-        <li><a href="wyklad5.html">Test - Wyklad 5</a></li>
-        <li><a href="wyklad6.html">Test - Wyklad 6</a></li>
-        <li><a href="wyklad7.html">Test - Wyklad 7</a></li>
-        <li><a href="wyklad8.html">Test - Wyklad 8</a></li>
-        <li><a href="wyklad9.html">Test - Wyklad 9</a></li>
-        <li><a href="wyklad10.html">Test - Wyklad 10</a></li>
-        <li><a href="wyklad11.html">Test - Wyklad 11</a></li>
-        <li><a href="wyklad12.html">Test - Wyklad 12</a></li>
-    </ul>
+    <div class="container mt-5">
+        <h1 class="mb-4">Testy Teoretyczne</h1>
+        <p>Wybierz temat:</p>
+        <div class="btn-group btn-group-toggle topic-select mb-4" data-toggle="buttons">
+            <label class="btn btn-primary">
+                <input type="radio" name="options" id="option1" autocomplete="off" onclick="showTests('NAI')"> NAI
+            </label>
+            <label class="btn btn-primary">
+                <input type="radio" name="options" id="option2" autocomplete="off" onclick="showTests('APBD')"> APBD
+            </label>
+        </div>
+        
+        <div id="NAI" class="test-links">
+            <p>Wybierz test z NAI:</p>
+            <ul class="list-group">
+                <li class="list-group-item"><a href="nai/nai_wyklad1.html">Test - Wyklad 1</a></li>
+                <li class="list-group-item"><a href="nai/nai_wyklad2.html">Test - Wyklad 2</a></li>
+                <li class="list-group-item"><a href="nai/nai_wyklad3.html">Test - Wyklad 3</a></li>
+                <li class="list-group-item"><a href="nai/nai_wyklad4.html">Test - Wyklad 4</a></li>
+                <li class="list-group-item"><a href="nai/nai_wyklad5.html">Test - Wyklad 5</a></li>
+                <li class="list-group-item"><a href="nai/nai_wyklad6.html">Test - Wyklad 6</a></li>
+                <li class="list-group-item"><a href="nai/nai_wyklad7.html">Test - Wyklad 7</a></li>
+                <li class="list-group-item"><a href="nai/nai_wyklad8.html">Test - Wyklad 8</a></li>
+                <li class="list-group-item"><a href="nai/nai_wyklad9.html">Test - Wyklad 9</a></li>
+                <li class="list-group-item"><a href="nai/nai_wyklad10.html">Test - Wyklad 10</a></li>
+                <li class="list-group-item"><a href="nai/nai_wyklad11.html">Test - Wyklad 11</a></li>
+                <li class="list-group-item"><a href="nai/ai_wyklad12.html">Test - Wyklad 12</a></li>
+            </ul>
+        </div>
+        
+        <div id="APBD" class="test-links">
+            <p>Wybierz test z APBD:</p>
+            <ul class="list-group">
+                <li class="list-group-item"><a href="apbd/apbd-egzamin.html">Egzamin Próbny</a></li>
+            </ul>
+        </div>
+    </div>
+    
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        function showTests(topic) {
+            // Hide all test links
+            const allLinks = document.querySelectorAll('.test-links');
+            allLinks.forEach(link => link.style.display = 'none');
+            
+            // Show the selected topic's test links
+            const selectedLinks = document.getElementById(topic);
+            if (selectedLinks) {
+                selectedLinks.style.display = 'block';
+            }
+        }
+    </script>
 </body>
 </html>

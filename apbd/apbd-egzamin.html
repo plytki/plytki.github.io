@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Egzamin Próbny - APBD</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+	<style>
+		body {
+			font-family: Arial, sans-serif;
+			background-color: #f8f9fa;
+			color: #333;
+		}
+		.container {
+			background-color: #fff;
+			padding: 30px;
+			border-radius: 8px;
+			box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+		}
+		h1 {
+			color: #007bff;
+		}
+		.form-group {
+			margin-bottom: 40px;
+		}
+		.option-div {
+			display: flex;
+			align-items: center;
+			margin: 10px 0;
+			padding: 10px;
+			border: 1px solid #ddd;
+			border-radius: 4px;
+			background-color: #f8f9fa;
+			cursor: pointer;
+			transition: background-color 0.3s ease;
+		}
+		.option-div:hover {
+			background-color: #e2e6ea;
+			cursor: pointer;
+		}
+		.option-div input[type="radio"] {
+			margin: 0;
+			cursor: pointer;
+		}
+		.option-div label {
+			margin: 0;
+			padding-left: 10px;
+			user-select: auto;
+			flex: 1;
+			cursor: pointer;
+		}
+		.correct {
+			background-color: #d4edda;
+			border-color: #c3e6cb;
+		}
+		.incorrect {
+			background-color: #f8d7da;
+			border-color: #f5c6cb;
+		}
+	</style>
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="mb-4">Egzamin Próbny - APBD</h1>
+		<h5 class="mb-4">Test jednokrotnego wyboru</h3>
+		<br>
+        <form id="testForm">
+            <!-- Questions will be inserted here by JavaScript -->
+        </form>
+        <button type="button" class="btn btn-primary mt-4" onclick="checkAnswers()">Sprawdź odpowiedzi</button>
+        <div id="results" class="mt-4"></div>
+    </div>
+
+    <script>
+		const questions = [
+			{ question: "Jakie są cechy systemu Git?", options: ["Rozproszony system kontroli wersji", "Scentralizowany system kontroli wersji", "System bez kontroli wersji", "System do zarządzania projektami"], answer: "Rozproszony system kontroli wersji" },
+			{ question: "Jakie są cechy systemów kontroli wersji?", options: ["Śledzenie zmian", "Możliwość przywracania wcześniejszych wersji", "Współpraca zespołowa", "Wszystkie powyższe"], answer: "Wszystkie powyższe" },
+			{ question: "Jakie są różnice między systemem wersjonowania scentralizowanym i rozproszonym?", options: ["Scentralizowany: jedno centralne repozytorium, rozproszony: każde repozytorium jest pełną kopią", "Scentralizowany: wiele kopii repozytorium, rozproszony: jedno centralne repozytorium", "Scentralizowany: brak repozytorium, rozproszony: jedno centralne repozytorium", "Scentralizowany: pełna kontrola, rozproszony: brak kontroli"], answer: "Scentralizowany: jedno centralne repozytorium, rozproszony: każde repozytorium jest pełną kopią" },
+			{ question: "Czym jest 'staging area' vs 'working area/working tree'?", options: ["Obszar przechowywania vs obszar roboczy", "Obszar testowy vs obszar produkcyjny", "Obszar staging vs obszar deploymentu", "Obszar kodu vs obszar danych"], answer: "Obszar przechowywania vs obszar roboczy" },
+			{ question: "Do czego służy komenda git commit?", options: ["Do zapisania zmian w staging area do historii", "Do dodawania plików do staging area", "Do sprawdzenia statusu repozytorium", "Do przesyłania zmian do zdalnego repozytorium"], answer: "Do zapisania zmian w staging area do historii" },
+			{ question: "Do czego służy komenda git status?", options: ["Do zapisania zmian w staging area do historii", "Do dodawania plików do staging area", "Do sprawdzenia statusu repozytorium", "Do przesyłania zmian do zdalnego repozytorium"], answer: "Do sprawdzenia statusu repozytorium" },
+			{ question: "Do czego służy komenda git add?", options: ["Do zapisania zmian w staging area do historii", "Do dodawania plików do staging area", "Do sprawdzenia statusu repozytorium", "Do przesyłania zmian do zdalnego repozytorium"], answer: "Do dodawania plików do staging area" },
+			{ question: "Do czego służy komenda git push?", options: ["Do zapisania zmian w staging area do historii", "Do dodawania plików do staging area", "Do sprawdzenia statusu repozytorium", "Do przesyłania zmian do zdalnego repozytorium"], answer: "Do przesyłania zmian do zdalnego repozytorium" },
+			{ question: "Czym jest gałąź (branch) w Git?", options: ["Oddzielna wersja projektu", "Podkatalog w repozytorium", "Pojedynczy commit", "Zdalne repozytorium"], answer: "Oddzielna wersja projektu" },
+			{ question: "Jakie są elementy ekosystemu .NET?", options: ["CLR, FCL, ASP.NET, WPF", "JDK, JVM, JRE", "LAMP, MEAN, MERN", "HTML, CSS, JavaScript"], answer: "CLR, FCL, ASP.NET, WPF" },
+			{ question: "Jakie są różnice między językiem Java i C#, w tym właściwości i podstawowe kolekcje używane na ćwiczeniach?", options: ["Java: JVM, Kolekcje, C#: CLR, List", "Java: JDK, HashMap, C#: .NET, Dictionary", "Java: JRE, Stack, C#: CLI, Queue", "Java: JVM, LinkedList, C#: FCL, ArrayList"], answer: "Java: JDK, HashMap, C#: .NET, Dictionary" },
+			{ question: "Jak wygląda proces kompilacji i uruchomienia aplikacji .NET w porównaniu do języka Java?", options: ["NET: CLR, Java: JVM", "NET: JDK, Java: SDK", "NET: JVM, Java: CLR", "NET: SDK, Java: JDK"], answer: "NET: CLR, Java: JVM" },
+			{ question: "W jaki sposób oceniamy i porównujemy algorytmy?", options: ["Przez złożoność obliczeniową", "Przez liczbę linii kodu", "Przez rodzaj użytych struktur danych", "Przez język programowania"], answer: "Przez złożoność obliczeniową" },
+			{ question: "Jakie są miary związane z jakością kodu?", options: ["Czytelność, utrzymywalność, efektywność", "Kolorowanie składni, formatowanie", "Kompatybilność, współbieżność", "Wersjonowanie, dokumentacja"], answer: "Czytelność, utrzymywalność, efektywność" },
+			{ question: "Czym jest kohezja i coupling?", options: ["Kohezja: spójność modułu, Coupling: zależności między modułami", "Kohezja: zależności między modułami, Coupling: spójność modułu", "Kohezja: struktura danych, Coupling: algorytm", "Kohezja: wydajność, Coupling: kompatybilność"], answer: "Kohezja: spójność modułu, Coupling: zależności między modułami" },
+			{ question: "Czym jest miara abstrakcji?", options: ["Poziom szczegółowości w kodzie", "Ilość kodu w module", "Liczba testów jednostkowych", "Ilość dokumentacji"], answer: "Poziom szczegółowości w kodzie" },
+			{ question: "Czym jest pojęcie 'connascence'?", options: ["Miara zależności między modułami", "Miara spójności modułu", "Typ struktury danych", "Rodzaj algorytmu"], answer: "Miara zależności między modułami" },
+			{ question: "Co oznacza skrót DRY?", options: ["Don't Repeat Yourself", "Don't Run Yet", "Do Repeat Yourself", "Do Right Yourself"], answer: "Don't Repeat Yourself" },
+			{ question: "Co oznacza skrót YAGNI?", options: ["You Ain't Gonna Need It", "You Always Gonna Need It", "You Aren't Gonna Need It", "You Always Gonna Need Info"], answer: "You Ain't Gonna Need It" },
+			{ question: "Co oznacza akronim SOLID? Wyjaśnij każdą z jego składowych.", options: ["Single Responsibility, Open/Closed, Liskov Substitution, Interface Segregation, Dependency Inversion", "Simple, Open, Linked, Integrated, Dependency", "Single, Open, Linked, Integrated, Dependency", "Simple, Open, Linked, Interface, Dependency"], answer: "Single Responsibility, Open/Closed, Liskov Substitution, Interface Segregation, Dependency Inversion" },
+			{ question: "Czym jest piramida testów?", options: ["Model hierarchii testów o różnych poziomach", "Struktura danych do przechowywania testów", "Algorytm sortowania testów", "Typ testów jednostkowych"], answer: "Model hierarchii testów o różnych poziomach" },
+			{ question: "Czym są testy jednostkowe?", options: ["Testy poszczególnych funkcji lub metod", "Testy całej aplikacji", "Testy integracji modułów", "Testy wydajnościowe"], answer: "Testy poszczególnych funkcji lub metod" },
+			{ question: "Czym są testy end-to-end (e2e)?", options: ["Testy całej aplikacji od początku do końca", "Testy poszczególnych funkcji", "Testy interfejsu użytkownika", "Testy jednostkowe"], answer: "Testy całej aplikacji od początku do końca" },
+			{ question: "Czym są testy biało skrzynkowe?", options: ["Testy oparte na znajomości wewnętrznej struktury kodu", "Testy oparte na wynikach wyjściowych", "Testy interfejsu użytkownika", "Testy wydajnościowe"], answer: "Testy oparte na znajomości wewnętrznej struktury kodu" },
+			{ question: "Czym są testy czarno skrzynkowe?", options: ["Testy oparte na wynikach wyjściowych bez znajomości wewnętrznej struktury kodu", "Testy oparte na znajomości wewnętrznej struktury kodu", "Testy interfejsu użytkownika", "Testy wydajnościowe"], answer: "Testy oparte na wynikach wyjściowych bez znajomości wewnętrznej struktury kodu" },
+			{ question: "Czym jest metoda AAA (Arrange-Act-Assert) pisania testów?", options: ["Metoda pisania testów jednostkowych", "Algorytm sortowania", "Struktura danych", "Model projektowania"], answer: "Metoda pisania testów jednostkowych" },
+			{ question: "Jakie są praktyki związane z nazewnictwem testów?", options: ["Czytelne i opisowe nazwy", "Skrócone i zwięzłe nazwy", "Używanie numerów", "Używanie symboli"], answer: "Czytelne i opisowe nazwy" },
+			{ question: "Czym są wyrażenia lambda?", options: ["Anonimowe funkcje", "Typ danych", "Struktura danych", "Algorytm sortowania"], answer: "Anonimowe funkcje" },
+			{ question: "Czym są delegaty?", options: ["Typy reprezentujące metody", "Struktury danych", "Algorytmy sortowania", "Typy danych"], answer: "Typy reprezentujące metody" },
+			{ question: "Czym są klasy Action i Func?", options: ["Przedstawiają delegaty", "Typy danych", "Struktury danych", "Algorytmy sortowania"], answer: "Przedstawiają delegaty" },
+			{ question: "Jakie są cechy architektury REST?", options: ["Stateless, Cacheable, Uniform Interface", "Stateful, Non-cacheable, Multiple Interfaces", "Stateless, Non-cacheable, Multiple Interfaces", "Stateful, Cacheable, Uniform Interface"], answer: "Stateless, Cacheable, Uniform Interface" },
+			{ question: "W jaki sposób ASP.NET przetwarza żądania HTTP?", options: ["Poprzez potok HTTP", "Poprzez usługi Windows", "Poprzez skrypty bash", "Poprzez konsolę"], answer: "Poprzez potok HTTP" },
+			{ question: "Jak projektować końcówki zgodne z architekturą REST?", options: ["Używając odpowiednich metod HTTP", "Używając konsoli", "Używając plików tekstowych", "Używając interfejsów graficznych"], answer: "Używając odpowiednich metod HTTP" },
+			{ question: "Jakie są metody HTTP i jak są wykorzystywane w architekturze REST?", options: ["GET, POST, PUT, DELETE", "FETCH, EXECUTE, DISPLAY", "RUN, BUILD, DESTROY", "CREATE, READ, UPDATE, DELETE"], answer: "GET, POST, PUT, DELETE" },
+			{ question: "Co oznacza rutowanie?", options: ["Kierowanie żądań do odpowiednich zasobów", "Sortowanie danych", "Przechowywanie danych", "Wyświetlanie danych"], answer: "Kierowanie żądań do odpowiednich zasobów" },
+			{ question: "Co oznacza cecha 'content negotiation' w architekturze REST?", options: ["Uzgadnianie formatu odpowiedzi między klientem a serwerem", "Wybieranie odpowiedniego serwera", "Wybieranie odpowiedniego klienta", "Uzgadnianie czasu odpowiedzi"], answer: "Uzgadnianie formatu odpowiedzi między klientem a serwerem" },
+			{ question: "Czym jest minimal API?", options: ["API o ograniczonej funkcjonalności", "Pełne API", "API do dużych projektów", "API do analizy danych"], answer: "API o ograniczonej funkcjonalności" },
+			{ question: "W jaki sposób przekazywać dane do serwera w architekturze REST?", options: ["Poprzez żądania HTTP", "Poprzez pliki", "Poprzez skrypty bash", "Poprzez konsolę"], answer: "Poprzez żądania HTTP" },
+			{ question: "Jakie są inne podejścia do budowy aplikacji webowych niż REST?", options: ["GraphQL, SOAP", "SQL, NoSQL", "HTML, CSS", "JSON, XML"], answer: "GraphQL, SOAP" },
+			{ question: "Czym są metody rozszerzeń?", options: ["Metody dodające funkcjonalność do istniejących typów", "Algorytmy sortowania", "Struktury danych", "Typy danych"], answer: "Metody dodające funkcjonalność do istniejących typów" },
+			{ question: "Jak samodzielnie stworzyć metodę rozszerzeń?", options: ["Poprzez zdefiniowanie statycznej klasy i metody", "Poprzez użycie interfejsów graficznych", "Poprzez użycie plików tekstowych", "Poprzez użycie skryptów bash"], answer: "Poprzez zdefiniowanie statycznej klasy i metody" },
+			{ question: "Czym różni się podejście deklaratywne od imperatywnego pod kątem kodu?", options: ["Deklaratywne: Co zrobić, Imperatywne: Jak zrobić", "Deklaratywne: Jak zrobić, Imperatywne: Co zrobić", "Deklaratywne: Struktury danych, Imperatywne: Algorytmy", "Deklaratywne: Algorytmy, Imperatywne: Struktury danych"], answer: "Deklaratywne: Co zrobić, Imperatywne: Jak zrobić" },
+			{ question: "W jaki sposób przeprowadzić deklaratywną walidację w kodzie?", options: ["Poprzez użycie adnotacji", "Poprzez skrypty bash", "Poprzez pliki tekstowe", "Poprzez interfejsy graficzne"], answer: "Poprzez użycie adnotacji" },
+			{ question: "Czym jest kontener IoC (Inversion of Control)?", options: ["Narzędzie do zarządzania zależnościami", "Algorytm sortowania", "Struktura danych", "Typ danych"], answer: "Narzędzie do zarządzania zależnościami" },
+			{ question: "Za co odpowiadają metody AddSingleton(), AddScoped() i AddTransient() w kontekście IoC? Czym się różnią?", options: ["AddSingleton: jeden egzemplarz, AddScoped: jeden na żądanie, AddTransient: nowy egzemplarz", "AddSingleton: nowy egzemplarz, AddScoped: jeden na żądanie, AddTransient: jeden egzemplarz", "AddSingleton: jeden na żądanie, AddScoped: nowy egzemplarz, AddTransient: jeden egzemplarz", "AddSingleton: jeden na żądanie, AddScoped: jeden egzemplarz, AddTransient: nowy egzemplarz"], answer: "AddSingleton: jeden egzemplarz, AddScoped: jeden na żądanie, AddTransient: nowy egzemplarz" },
+			{ question: "Czym jest cykl życia zależności zarejestrowanej w kontenerze IoC?", options: ["Okres od utworzenia do zniszczenia obiektu", "Okres od kompilacji do uruchomienia", "Okres od zapisania do odczytania", "Okres od sortowania do filtrowania"], answer: "Okres od utworzenia do zniszczenia obiektu" },
+			{ question: "Czym się różni podejście architektoniczne 'horizontal slice' od 'vertical slice'?", options: ["Horizontal slice: poziome warstwy, Vertical slice: pionowe warstwy", "Horizontal slice: pionowe warstwy, Vertical slice: poziome warstwy", "Horizontal slice: struktury danych, Vertical slice: algorytmy", "Horizontal slice: algorytmy, Vertical slice: struktury danych"], answer: "Horizontal slice: poziome warstwy, Vertical slice: pionowe warstwy" },
+			{ question: "Czym są repozytoria i dlaczego je wykorzystujemy?", options: ["Abstrakcja warstwy dostępu do danych", "Algorytmy sortowania", "Struktury danych", "Typy danych"], answer: "Abstrakcja warstwy dostępu do danych" },
+			{ question: "Jakie są wady i zalety korzystania z SqlConnection i SqlCommand w porównaniu z użyciem EF (Entity Framework)?", options: ["SqlConnection i SqlCommand: większa kontrola, EF: łatwiejsze mapowanie obiektowo-relacyjne", "SqlConnection i SqlCommand: łatwiejsze mapowanie obiektowo-relacyjne, EF: większa kontrola", "SqlConnection i SqlCommand: brak kontroli, EF: brak mapowania obiektowo-relacyjnego", "SqlConnection i SqlCommand: brak mapowania obiektowo-relacyjnego, EF: brak kontroli"], answer: "SqlConnection i SqlCommand: większa kontrola, EF: łatwiejsze mapowanie obiektowo-relacyjne" },
+			{ question: "Jakie są dobre praktyki związane z wykorzystywaniem SqlConnection i SqlCommand?", options: ["Używanie parametrów, zamykanie połączeń", "Używanie zapytań tekstowych, pozostawianie połączeń otwartych", "Używanie stałych wartości, brak zamykania połączeń", "Używanie zmiennych globalnych, brak zamykania połączeń"], answer: "Używanie parametrów, zamykanie połączeń" },
+			{ question: "Czym jest atak SQL Injection i jak się przed nim zabezpieczyć?", options: ["Wstrzyknięcie szkodliwego kodu SQL, używanie parametrów zapytań", "Wstrzyknięcie danych wejściowych, używanie zapytań tekstowych", "Wstrzyknięcie plików, używanie stałych wartości", "Wstrzyknięcie skryptów, używanie zmiennych globalnych"], answer: "Wstrzyknięcie szkodliwego kodu SQL, używanie parametrów zapytań" },
+			{ question: "W jaki sposób możemy oddzielić logikę biznesową od reszty kodu? Jaka jest różnica między DAL (Data Access Layer) a BAL (Business Access Layer)?", options: ["DAL: dostęp do danych, BAL: logika biznesowa", "DAL: logika biznesowa, BAL: dostęp do danych", "DAL: sortowanie danych, BAL: filtrowanie danych", "DAL: filtrowanie danych, BAL: sortowanie danych"], answer: "DAL: dostęp do danych, BAL: logika biznesowa" },
+			{ question: "Czym jest programowanie równoległe?", options: ["Wykonywanie wielu operacji jednocześnie", "Wykonywanie jednej operacji po drugiej", "Wykonywanie operacji w pętli", "Wykonywanie operacji warunkowych"], answer: "Wykonywanie wielu operacji jednocześnie" },
+			{ question: "Czym jest programowanie asynchroniczne?", options: ["Wykonywanie operacji w tle", "Wykonywanie operacji sekwencyjnie", "Wykonywanie operacji w pętli", "Wykonywanie operacji warunkowych"], answer: "Wykonywanie operacji w tle" },
+			{ question: "Jakie są wady i zalety programowania asynchronicznego?", options: ["Wady: trudności z debugowaniem, Zalety: poprawa wydajności", "Wady: łatwość debugowania, Zalety: spadek wydajności", "Wady: trudności z testowaniem, Zalety: spadek wydajności", "Wady: łatwość testowania, Zalety: poprawa wydajności"], answer: "Wady: trudności z debugowaniem, Zalety: poprawa wydajności" },
+			{ question: "Czym jest proces?", options: ["Wykonywana aplikacja", "Pojedyncza funkcja", "Pojedyncza metoda", "Pojedynczy wątek"], answer: "Wykonywana aplikacja" },
+			{ question: "Czym jest wątek?", options: ["Jednostka wykonania w procesie", "Wykonywana aplikacja", "Pojedyncza funkcja", "Pojedyncza metoda"], answer: "Jednostka wykonania w procesie" },
+			{ question: "Jakie są różnice, wady i zalety między procesami a wątkami?", options: ["Procesy: większa izolacja, Wątki: większa współbieżność", "Procesy: większa współbieżność, Wątki: większa izolacja", "Procesy: większa złożoność, Wątki: mniejsza złożoność", "Procesy: mniejsza złożoność, Wątki: większa złożoność"], answer: "Procesy: większa izolacja, Wątki: większa współbieżność" },
+			{ question: "Czym są operacje 'CPU bound' i 'IO bound'?", options: ["CPU bound: zależne od mocy obliczeniowej, IO bound: zależne od operacji wejścia/wyjścia", "CPU bound: zależne od operacji wejścia/wyjścia, IO bound: zależne od mocy obliczeniowej", "CPU bound: zależne od pamięci, IO bound: zależne od dysku", "CPU bound: zależne od dysku, IO bound: zależne od pamięci"], answer: "CPU bound: zależne od mocy obliczeniowej, IO bound: zależne od operacji wejścia/wyjścia" },
+			{ question: "Czym są operacje I/O?", options: ["Operacje wejścia/wyjścia", "Operacje obliczeniowe", "Operacje pamięciowe", "Operacje dyskowe"], answer: "Operacje wejścia/wyjścia" },
+			{ question: "Jak ręcznie tworzyć wątek?", options: ["Poprzez utworzenie obiektu Thread", "Poprzez utworzenie obiektu Process", "Poprzez utworzenie obiektu Task", "Poprzez utworzenie obiektu Event"], answer: "Poprzez utworzenie obiektu Thread" },
+			{ question: "Jakie są wady i zalety ręcznego zarządzania wątkami?", options: ["Wady: trudności z synchronizacją, Zalety: większa kontrola", "Wady: łatwość synchronizacji, Zalety: mniejsza kontrola", "Wady: trudności z debugowaniem, Zalety: spadek wydajności", "Wady: łatwość debugowania, Zalety: poprawa wydajności"], answer: "Wady: trudności z synchronizacją, Zalety: większa kontrola" },
+			{ question: "Dlaczego programowanie asynchroniczne jest ważne w kontekście aplikacji webowych?", options: ["Pozwala na obsługę wielu żądań jednocześnie", "Pozwala na sekwencyjną obsługę żądań", "Pozwala na obsługę jednego żądania na raz", "Pozwala na obsługę żądań w tle"], answer: "Pozwala na obsługę wielu żądań jednocześnie" },
+			{ question: "Czym jest Task?", options: ["Jednostka wykonania asynchronicznego", "Jednostka wykonania synchronicznego", "Struktura danych", "Typ danych"], answer: "Jednostka wykonania asynchronicznego" },
+			{ question: "Czym jest pula wątków (thread pool)?", options: ["Zbiór wątków gotowych do użycia", "Zbiór procesów gotowych do użycia", "Zbiór funkcji gotowych do użycia", "Zbiór metod gotowych do użycia"], answer: "Zbiór wątków gotowych do użycia" },
+			{ question: "Do czego służą słowa kluczowe await i async?", options: ["Do obsługi operacji asynchronicznych", "Do obsługi operacji synchronicznych", "Do obsługi struktur danych", "Do obsługi typów danych"], answer: "Do obsługi operacji asynchronicznych" },
+			{ question: "Czym jest transakcja?", options: ["Zestaw operacji wykonywanych jako całość", "Pojedyncza operacja", "Operacja asynchroniczna", "Operacja synchroniczna"], answer: "Zestaw operacji wykonywanych jako całość" },
+			{ question: "W jaki sposób wykonać kilka operacji w ramach jednej transakcji używając SqlConnection i SqlCommand?", options: ["Używając obiektu SqlTransaction", "Używając obiektu SqlTask", "Używając obiektu SqlThread", "Używając obiektu SqlProcess"], answer: "Używając obiektu SqlTransaction" },
+			{ question: "Jak korzystać z klas SqlConnection i SqlCommand?", options: ["Tworząc instancje tych klas i wywołując metody", "Tworząc instancje klas Process i Thread", "Tworząc instancje klas Task i Event", "Tworząc instancje klas Data i Info"], answer: "Tworząc instancje tych klas i wywołując metody" },
+			{ question: "Czym są typy anonimowe?", options: ["Typy bez nazwy, zdefiniowane w locie", "Typy z nazwy, zdefiniowane w kodzie", "Typy bez nazwy, zdefiniowane w kodzie", "Typy z nazwy, zdefiniowane w locie"], answer: "Typy bez nazwy, zdefiniowane w locie" },
+			{ question: "Czym jest język LINQ?", options: ["Język zapytań zintegrowany z C#", "Język programowania", "Język skryptowy", "Język znaczników"], answer: "Język zapytań zintegrowany z C#" },
+			{ question: "Czym jest składnia query syntax w języku LINQ?", options: ["Składnia zapytań przypominająca SQL", "Składnia zapytań przypominająca XML", "Składnia zapytań przypominająca JSON", "Składnia zapytań przypominająca HTML"], answer: "Składnia zapytań przypominająca SQL" },
+			{ question: "Czym jest składnia z wyrażeniami lambda w języku LINQ?", options: ["Składnia używająca anonimowych funkcji", "Składnia używająca znaczników", "Składnia używająca zmiennych", "Składnia używająca stałych"], answer: "Składnia używająca anonimowych funkcji" },
+			{ question: "Jakie są wady i zalety korzystania z składni query syntax vs lambda syntax w LINQ?", options: ["Query syntax: czytelność, Lambda syntax: zwięzłość", "Query syntax: zwięzłość, Lambda syntax: czytelność", "Query syntax: złożoność, Lambda syntax: prostota", "Query syntax: prostota, Lambda syntax: złożoność"], answer: "Query syntax: czytelność, Lambda syntax: zwięzłość" },
+			{ question: "Jakie są wady i zalety korzystania z SqlConnection vs ORM (Object-Relational Mapping) takiego jak EF?", options: ["SqlConnection: większa kontrola, EF: łatwiejsze mapowanie obiektowo-relacyjne", "SqlConnection: łatwiejsze mapowanie obiektowo-relacyjne, EF: większa kontrola", "SqlConnection: brak kontroli, EF: brak mapowania obiektowo-relacyjnego", "SqlConnection: brak mapowania obiektowo-relacyjnego, EF: brak kontroli"], answer: "SqlConnection: większa kontrola, EF: łatwiejsze mapowanie obiektowo-relacyjne" },
+			{ question: "Czym jest podejście 'code first' w EF?", options: ["Definiowanie modelu w kodzie", "Definiowanie modelu w bazie danych", "Definiowanie modelu w plikach tekstowych", "Definiowanie modelu w skryptach bash"], answer: "Definiowanie modelu w kodzie" },
+			{ question: "Czym jest podejście 'database first' w EF?", options: ["Definiowanie modelu w bazie danych", "Definiowanie modelu w kodzie", "Definiowanie modelu w plikach tekstowych", "Definiowanie modelu w skryptach bash"], answer: "Definiowanie modelu w bazie danych" },
+			{ question: "Kiedy stosujemy podejście 'code first' vs 'database first'?", options: ["Code first: nowy projekt, Database first: istniejąca baza danych", "Code first: istniejąca baza danych, Database first: nowy projekt", "Code first: pliki tekstowe, Database first: skrypty bash", "Code first: skrypty bash, Database first: pliki tekstowe"], answer: "Code first: nowy projekt, Database first: istniejąca baza danych" },
+			{ question: "Jakie są wady i zalety podejścia 'code first' vs 'database first'?", options: ["Code first: elastyczność, Database first: prostota", "Code first: prostota, Database first: elastyczność", "Code first: złożoność, Database first: prostota", "Code first: prostota, Database first: złożoność"], answer: "Code first: elastyczność, Database first: prostota" },
+			{ question: "Jak korzystać z LINQ - metody, wyrażenia, do czego służą na przykładzie ćwiczeń?", options: ["Do zapytań do kolekcji danych", "Do sortowania danych", "Do filtrowania danych", "Do grupowania danych"], answer: "Do zapytań do kolekcji danych" },
+			{ question: "Czym są migracje?", options: ["Mechanizm zarządzania zmianami w bazie danych", "Mechanizm zarządzania wersjami kodu", "Mechanizm zarządzania zasobami", "Mechanizm zarządzania uprawnieniami"], answer: "Mechanizm zarządzania zmianami w bazie danych" },
+			{ question: "Z czego składa się migracja?", options: ["Zestaw zmian w bazie danych", "Zestaw zmian w kodzie", "Zestaw zmian w zasobach", "Zestaw zmian w uprawnieniach"], answer: "Zestaw zmian w bazie danych" },
+			{ question: "Jak korzystamy z podejścia 'code first' w EF?", options: ["Definiując model w kodzie i generując bazę danych", "Definiując model w bazie danych i generując kod", "Definiując model w plikach tekstowych i generując skrypty bash", "Definiując model w skryptach bash i generując pliki tekstowe"], answer: "Definiując model w kodzie i generując bazę danych" },
+			{ question: "W jaki sposób możemy dodawać metody do naszych modeli - adnotacje, OnModelCreating i osobne klasy implementujące IEntityTypeConfiguration?", options: ["Poprzez definicje w kodzie", "Poprzez definicje w bazie danych", "Poprzez definicje w plikach tekstowych", "Poprzez definicje w skryptach bash"], answer: "Poprzez definicje w kodzie" },
+			{ question: "Czym jest problem określany jako 'lost update'?", options: ["Utrata zmian w wyniku nadpisania", "Utrata danych w wyniku awarii", "Utrata połączenia z bazą danych", "Utrata uprawnień do zasobów"], answer: "Utrata zmian w wyniku nadpisania" },
+			{ question: "Czym jest problem określany jako 'inconsistent reads'?", options: ["Odczyt nieaktualnych danych", "Odczyt danych w złym formacie", "Odczyt danych z nieautoryzowanego źródła", "Odczyt danych w złej kolejności"], answer: "Odczyt nieaktualnych danych" },
+			{ question: "Czym jest blokowanie optymistyczne?", options: ["Mechanizm kontroli współbieżności", "Mechanizm kontroli dostępu", "Mechanizm kontroli zasobów", "Mechanizm kontroli uprawnień"], answer: "Mechanizm kontroli współbieżności" },
+			{ question: "Jak implementować blokowanie optymistyczne?", options: ["Używając wersjonowania rekordów", "Używając blokad", "Używając kluczy głównych", "Używając kluczy obcych"], answer: "Używając wersjonowania rekordów" },
+			{ question: "Jak działa atrybut ConcurrencyCheck?", options: ["Zapewnia, że rekord nie zostanie zmieniony w trakcie aktualizacji", "Zapewnia, że rekord zostanie usunięty po aktualizacji", "Zapewnia, że rekord zostanie dodany po aktualizacji", "Zapewnia, że rekord zostanie odczytany po aktualizacji"], answer: "Zapewnia, że rekord nie zostanie zmieniony w trakcie aktualizacji" },
+			{ question: "Jak działa blokowanie pesymistyczne?", options: ["Używa blokad do zapobiegania konfliktom", "Używa kluczy głównych do zapobiegania konfliktom", "Używa kluczy obcych do zapobiegania konfliktom", "Używa indeksów do zapobiegania konfliktom"], answer: "Używa blokad do zapobiegania konfliktom" },
+			{ question: "Czym jest wzorzec 'Big Ball of Mud'?", options: ["Kod o niskiej jakości, bez struktury", "Kod o wysokiej jakości, ze strukturą", "Kod z dużą ilością komentarzy", "Kod z dużą ilością zmiennych globalnych"], answer: "Kod o niskiej jakości, bez struktury" },
+			{ question: "Jakie są trzy ogólne zestawy odpowiedzialności, które znajdujemy w każdej aplikacji?", options: ["Prezentacja, logika biznesowa, dostęp do danych", "Prezentacja, logika, pamięć", "Prezentacja, struktura, algorytmy", "Prezentacja, algorytmy, pamięć"], answer: "Prezentacja, logika biznesowa, dostęp do danych" },
+			{ question: "Czym jest podejście określane jako 'transactional script'?", options: ["Sposób organizacji logiki biznesowej w prostych skryptach", "Sposób organizacji danych w bazie", "Sposób organizacji kodu w klasach", "Sposób organizacji interfejsów"], answer: "Sposób organizacji logiki biznesowej w prostych skryptach" },
+			{ question: "Czym jest model domenowy?", options: ["Reprezentacja logiki biznesowej jako obiekty", "Reprezentacja danych jako obiekty", "Reprezentacja algorytmów jako obiekty", "Reprezentacja interfejsów jako obiekty"], answer: "Reprezentacja logiki biznesowej jako obiekty" },
+			{ question: "Jakie są zalety i wady opisanych podejść?", options: ["Zalety: prostota, Wady: brak elastyczności", "Zalety: elastyczność, Wady: złożoność", "Zalety: złożoność, Wady: prostota", "Zalety: brak elastyczności, Wady: prostota"], answer: "Zalety: prostota, Wady: brak elastyczności" },
+			{ question: "Czym jest wzorzec Unit of Work?", options: ["Wzorzec do grupowania operacji w jedną transakcję", "Wzorzec do sortowania danych", "Wzorzec do filtrowania danych", "Wzorzec do grupowania danych"], answer: "Wzorzec do grupowania operacji w jedną transakcję" },
+			{ question: "Do czego służy CancellationToken?", options: ["Do anulowania operacji asynchronicznych", "Do anulowania operacji synchronicznych", "Do anulowania operacji warunkowych", "Do anulowania operacji pętli"], answer: "Do anulowania operacji asynchronicznych" },
+			{ question: "Czym jest middleware?", options: ["Oprogramowanie pośredniczące w komunikacji", "Oprogramowanie do zarządzania danymi", "Oprogramowanie do zarządzania zasobami", "Oprogramowanie do zarządzania uprawnieniami"], answer: "Oprogramowanie pośredniczące w komunikacji" },
+			{ question: "Jak dodać własny middleware?", options: ["Poprzez zdefiniowanie klasy middleware", "Poprzez zdefiniowanie klasy Controller", "Poprzez zdefiniowanie klasy Model", "Poprzez zdefiniowanie klasy View"], answer: "Poprzez zdefiniowanie klasy middleware" },
+			{ question: "Jaka jest różnica między uwierzytelnianiem i autoryzacją?", options: ["Uwierzytelnianie: sprawdzenie tożsamości, Autoryzacja: przyznanie uprawnień", "Uwierzytelnianie: przyznanie uprawnień, Autoryzacja: sprawdzenie tożsamości", "Uwierzytelnianie: filtrowanie danych, Autoryzacja: sortowanie danych", "Uwierzytelnianie: sortowanie danych, Autoryzacja: filtrowanie danych"], answer: "Uwierzytelnianie: sprawdzenie tożsamości, Autoryzacja: przyznanie uprawnień" },
+			{ question: "Jak działa uwierzytelnianie w oparciu o bazę danych?", options: ["Sprawdzenie poświadczeń użytkownika w bazie danych", "Sprawdzenie poświadczeń użytkownika w plikach tekstowych", "Sprawdzenie poświadczeń użytkownika w skryptach bash", "Sprawdzenie poświadczeń użytkownika w interfejsach graficznych"], answer: "Sprawdzenie poświadczeń użytkownika w bazie danych" },
+			{ question: "Jak działa uwierzytelnianie wykorzystujące session ID?", options: ["Przechowywanie identyfikatora sesji na serwerze", "Przechowywanie identyfikatora sesji w plikach tekstowych", "Przechowywanie identyfikatora sesji w skryptach bash", "Przechowywanie identyfikatora sesji w interfejsach graficznych"], answer: "Przechowywanie identyfikatora sesji na serwerze" },
+			{ question: "Jak działa uwierzytelnianie wykorzystujące access token (JWT) i refresh token?", options: ["Przechowywanie tokenów na kliencie", "Przechowywanie tokenów na serwerze", "Przechowywanie tokenów w plikach tekstowych", "Przechowywanie tokenów w skryptach bash"], answer: "Przechowywanie tokenów na kliencie" },
+			{ question: "Do czego służą access token i refresh token?", options: ["Do uwierzytelniania i odświeżania sesji", "Do uwierzytelniania i zarządzania danymi", "Do uwierzytelniania i zarządzania zasobami", "Do uwierzytelniania i zarządzania uprawnieniami"], answer: "Do uwierzytelniania i odświeżania sesji" },
+			{ question: "Jakie są wady i zalety tokena JWT?", options: ["Zalety: łatwość przenoszenia, Wady: brak możliwości unieważnienia", "Zalety: trudność przenoszenia, Wady: możliwość unieważnienia", "Zalety: łatwość unieważnienia, Wady: trudność przenoszenia", "Zalety: trudność unieważnienia, Wady: możliwość przenoszenia"], answer: "Zalety: łatwość przenoszenia, Wady: brak możliwości unieważnienia" },
+			{ question: "Czym się różni szyfrowanie od kodowania?", options: ["Szyfrowanie: ochrona danych, Kodowanie: formatowanie danych", "Szyfrowanie: formatowanie danych, Kodowanie: ochrona danych", "Szyfrowanie: sortowanie danych, Kodowanie: filtrowanie danych", "Szyfrowanie: filtrowanie danych, Kodowanie: sortowanie danych"], answer: "Szyfrowanie: ochrona danych, Kodowanie: formatowanie danych" },
+			{ question: "Z czego składa się JWT?", options: ["Header, Payload, Signature", "Header, Body, Footer", "Header, Content, Footer", "Header, Data, Footer"], answer: "Header, Payload, Signature" },
+			{ question: "Czym są obiekty DTO (Data Transfer Object)?", options: ["Obiekty do przenoszenia danych między warstwami aplikacji", "Obiekty do sortowania danych", "Obiekty do filtrowania danych", "Obiekty do zarządzania danymi"], answer: "Obiekty do przenoszenia danych między warstwami aplikacji" },
+			{ question: "Czym są aplikacje MPA (Multi-Page Application)?", options: ["Aplikacje z wieloma stronami", "Aplikacje z jedną stroną", "Aplikacje mobilne", "Aplikacje desktopowe"], answer: "Aplikacje z wieloma stronami" },
+			{ question: "Czym są aplikacje SPA (Single-Page Application)?", options: ["Aplikacje z jedną stroną", "Aplikacje z wieloma stronami", "Aplikacje mobilne", "Aplikacje desktopowe"], answer: "Aplikacje z jedną stroną" },
+			{ question: "Jakie są wady, zalety i różnice między MPA i SPA?", options: ["MPA: lepsza optymalizacja SEO, SPA: lepsza wydajność", "MPA: gorsza optymalizacja SEO, SPA: gorsza wydajność", "MPA: lepsza wydajność, SPA: lepsza optymalizacja SEO", "MPA: gorsza wydajność, SPA: gorsza optymalizacja SEO"], answer: "MPA: lepsza optymalizacja SEO, SPA: lepsza wydajność" },
+			{ question: "Czym jest różnica między klientem cienkim a grubym?", options: ["Klient cienki: przetwarzanie na serwerze, Klient gruby: przetwarzanie na kliencie", "Klient cienki: przetwarzanie na kliencie, Klient gruby: przetwarzanie na serwerze", "Klient cienki: przetwarzanie w pamięci, Klient gruby: przetwarzanie na dysku", "Klient cienki: przetwarzanie na dysku, Klient gruby: przetwarzanie w pamięci"], answer: "Klient cienki: przetwarzanie na serwerze, Klient gruby: przetwarzanie na kliencie" },
+			{ question: "Czym jest ASP.NET MVC?", options: ["Framework do tworzenia aplikacji webowych", "Framework do tworzenia aplikacji mobilnych", "Framework do tworzenia aplikacji desktopowych", "Framework do tworzenia aplikacji konsolowych"], answer: "Framework do tworzenia aplikacji webowych" },
+			{ question: "Czym jest Slink Razor?", options: ["Silnik widoków w ASP.NET MVC", "Silnik baz danych", "Silnik renderowania grafiki", "Silnik obsługi plików"], answer: "Silnik widoków w ASP.NET MVC" },
+			{ question: "Jak przekazać dane do widoku?", options: ["Poprzez ViewBag, ViewData, Model", "Poprzez pliki tekstowe", "Poprzez skrypty bash", "Poprzez interfejsy graficzne"], answer: "Poprzez ViewBag, ViewData, Model" },
+			{ question: "Czym jest ViewBag?", options: ["Dynamiczny obiekt do przekazywania danych do widoku", "Struktura danych do sortowania", "Algorytm do filtrowania danych", "Typ danych do przechowywania danych"], answer: "Dynamiczny obiekt do przekazywania danych do widoku" },
+			{ question: "Czym są widoki silnie typowane?", options: ["Widoki powiązane z modelem danych", "Widoki powiązane z kontrolerem", "Widoki powiązane z interfejsem użytkownika", "Widoki powiązane z bazą danych"], answer: "Widoki powiązane z modelem danych" },
+			{ question: "Jak działa formularz HTML?", options: ["Umożliwia użytkownikowi wprowadzenie danych i przesłanie ich do serwera", "Umożliwia użytkownikowi sortowanie danych", "Umożliwia użytkownikowi filtrowanie danych", "Umożliwia użytkownikowi wyświetlanie danych"], answer: "Umożliwia użytkownikowi wprowadzenie danych i przesłanie ich do serwera" },
+			{ question: "Czym się różni walidacja serwerowa od klienta?", options: ["Serwerowa: wykonywana na serwerze, Klienta: wykonywana w przeglądarce", "Serwerowa: wykonywana w przeglądarce, Klienta: wykonywana na serwerze", "Serwerowa: wykonywana w pamięci, Klienta: wykonywana na dysku", "Serwerowa: wykonywana na dysku, Klienta: wykonywana w pamięci"], answer: "Serwerowa: wykonywana na serwerze, Klienta: wykonywana w przeglądarce" },
+			{ question: "Czym jest WebAssembly?", options: ["Format binarny umożliwiający uruchamianie kodu w przeglądarce", "Format tekstowy umożliwiający uruchamianie kodu w przeglądarce", "Format binarny umożliwiający sortowanie danych", "Format tekstowy umożliwiający sortowanie danych"], answer: "Format binarny umożliwiający uruchamianie kodu w przeglądarce" },
+			{ question: "Jakie są wady i zalety WebAssembly?", options: ["Zalety: wysokie osiągi, Wady: ograniczona kompatybilność", "Zalety: niskie osiągi, Wady: pełna kompatybilność", "Zalety: pełna kompatybilność, Wady: wysokie osiągi", "Zalety: ograniczona kompatybilność, Wady: niskie osiągi"], answer: "Zalety: wysokie osiągi, Wady: ograniczona kompatybilność" },
+			{ question: "Czym jest Blazor?", options: ["Framework do tworzenia interaktywnych aplikacji webowych", "Framework do tworzenia aplikacji mobilnych", "Framework do tworzenia aplikacji desktopowych", "Framework do tworzenia aplikacji konsolowych"], answer: "Framework do tworzenia interaktywnych aplikacji webowych" },
+			{ question: "Jaka jest różnica między Blazor Server Side a Blazor Client Side?", options: ["Server Side: uruchamiany na serwerze, Client Side: uruchamiany w przeglądarce", "Server Side: uruchamiany w przeglądarce, Client Side: uruchamiany na serwerze", "Server Side: uruchamiany na kliencie, Client Side: uruchamiany w przeglądarce", "Server Side: uruchamiany na kliencie, Client Side: uruchamiany na serwerze"], answer: "Server Side: uruchamiany na serwerze, Client Side: uruchamiany w przeglądarce" },
+			{ question: "Czym są testy integracyjne?", options: ["Testy sprawdzające współpracę między różnymi modułami", "Testy sprawdzające działanie pojedynczych funkcji", "Testy sprawdzające wydajność aplikacji", "Testy sprawdzające zgodność z wymaganiami"], answer: "Testy sprawdzające współpracę między różnymi modułami" },
+			{ question: "Czym są obiekty testowe?", options: ["Obiekty używane do testowania aplikacji", "Obiekty używane do sortowania danych", "Obiekty używane do filtrowania danych", "Obiekty używane do zarządzania danymi"], answer: "Obiekty używane do testowania aplikacji" },
+			{ question: "Czym jest mock?", options: ["Obiekt symulujący zachowanie zależności w testach", "Obiekt do sortowania danych", "Obiekt do filtrowania danych", "Obiekt do zarządzania danymi"], answer: "Obiekt symulujący zachowanie zależności w testach" },
+			{ question: "Czym jest spy?", options: ["Obiekt przechwytujący i zapisujący wywołania metod", "Obiekt do sortowania danych", "Obiekt do filtrowania danych", "Obiekt do zarządzania danymi"], answer: "Obiekt przechwytujący i zapisujący wywołania metod" },
+			{ question: "Czym jest fake?", options: ["Obiekt implementujący interfejs testowanej klasy", "Obiekt do sortowania danych", "Obiekt do filtrowania danych", "Obiekt do zarządzania danymi"], answer: "Obiekt implementujący interfejs testowanej klasy" },
+			{ question: "Czym jest stub?", options: ["Obiekt dostarczający dane w testach", "Obiekt do sortowania danych", "Obiekt do filtrowania danych", "Obiekt do zarządzania danymi"], answer: "Obiekt dostarczający dane w testach" },
+			{ question: "Czym jest dummy?", options: ["Obiekt używany w testach, nie wykorzystywany bezpośrednio", "Obiekt do sortowania danych", "Obiekt do filtrowania danych", "Obiekt do zarządzania danymi"], answer: "Obiekt używany w testach, nie wykorzystywany bezpośrednio" }
+		];
+
+		// Function to shuffle array elements
+		function shuffle(array) {
+			for (let i = array.length - 1; i > 0; i--) {
+				const j = Math.floor(Math.random() * (i + 1));
+				[array[i], array[j]] = [array[j], array[i]];
+			}
+			return array;
+		}
+
+		// Function to get random questions
+		function getRandomQuestions(arr, num) {
+			const shuffled = arr.sort(() => 0.5 - Math.random());
+			return shuffled.slice(0, num);
+		}
+
+		// Load questions into the form
+		function loadQuestions() {
+			const selectedQuestions = getRandomQuestions(questions, 20);
+			const form = document.getElementById('testForm');
+
+			selectedQuestions.forEach((q, index) => {
+				q.options = shuffle(q.options); // Shuffle options for each question
+
+				let questionDiv = document.createElement('div');
+				questionDiv.className = 'form-group';
+
+				let label = document.createElement('label');
+				label.innerHTML = `${index + 1}. ${q.question}`;
+				questionDiv.appendChild(label);
+
+				q.options.forEach((option, optIndex) => {
+					let div = document.createElement('div');
+					div.className = 'option-div';
+
+					let input = document.createElement('input');
+					input.type = 'radio';
+					input.name = `question${index}`;
+					input.value = option;
+					input.id = `question${index}_option${optIndex}`;
+
+					let optionLabel = document.createElement('label');
+					optionLabel.htmlFor = input.id;
+					optionLabel.innerHTML = option;
+
+					div.appendChild(input);
+					div.appendChild(optionLabel);
+					questionDiv.appendChild(div);
+
+					// Add click event listener to the optionDiv
+					div.addEventListener('click', () => {
+						input.checked = true;
+					});
+				});
+
+				form.appendChild(questionDiv);
+			});
+		}
+
+		// Check answers and display results
+		function checkAnswers() {
+			const form = document.getElementById('testForm');
+			const inputs = form.querySelectorAll('input[type="radio"]:checked');
+			const results = document.getElementById('results');
+			let correctAnswers = 0;
+
+			const selectedQuestions = Array.from(form.querySelectorAll('.form-group')).map((group, index) => {
+				const questionLabel = group.querySelector('label').innerHTML.split('. ')[1];
+				return questions.find(q => q.question === questionLabel);
+			});
+
+			selectedQuestions.forEach((q, index) => {
+				const questionDiv = form.getElementsByClassName('form-group')[index];
+				const selectedOption = Array.from(inputs).find(input => input.name === `question${index}`);
+				if (selectedOption && selectedOption.value === q.answer) {
+					correctAnswers++;
+					questionDiv.querySelectorAll('.option-div').forEach(div => {
+						const input = div.querySelector('input[type="radio"]');
+						if (input.value === q.answer) {
+							div.classList.add('correct');
+						}
+					});
+				} else {
+					questionDiv.querySelectorAll('.option-div').forEach(div => {
+						const input = div.querySelector('input[type="radio"]');
+						if (input.checked) {
+							div.classList.add('incorrect');
+						} else if (input.value === q.answer) {
+							div.classList.add('correct');
+						}
+					});
+				}
+			});
+
+			// Disable the button
+			document.querySelector('button').disabled = true;
+
+			// Display the score
+			const totalQuestions = selectedQuestions.length;
+			const percentage = (correctAnswers / totalQuestions) * 100;
+			results.innerHTML = `<div><strong>Score: ${correctAnswers}/${totalQuestions} (${percentage.toFixed(2)}%)</strong></div>`;
+		}
+
+		window.onload = loadQuestions;
+    </script>
+</body>
+</html>
