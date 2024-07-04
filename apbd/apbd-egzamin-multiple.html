@@ -1179,7 +1179,7 @@
 
         // Load questions into the form
         function loadQuestions() {
-            const selectedQuestions = getRandomQuestions(questions, 20);
+            const selectedQuestions = getRandomQuestions(questions, 169);
             const form = document.getElementById('testForm');
 
             selectedQuestions.forEach((q, index) => {
@@ -1229,13 +1229,14 @@
 
             const selectedQuestions = Array.from(form.querySelectorAll('.form-group')).map((group, index) => {
                 const questionLabel = group.querySelector('label').innerHTML.split('. ')[1];
-                return questions.find(q => q.question === questionLabel);
+                return questions.find(q => q.question.includes(questionLabel));
             });
 
             selectedQuestions.forEach((q, index) => {
                 const questionDiv = form.getElementsByClassName('form-group')[index];
                 const selectedOptions = Array.from(inputs).filter(input => input.name === `question${index}` && input.checked);
                 const selectedValues = selectedOptions.map(option => option.value);
+                if (!q || !q.answer) return; // Ensure q and q.answer are defined
                 const isCorrect = selectedValues.length === q.answer.length && selectedValues.every(val => q.answer.includes(val));
                 if (isCorrect) {
                     correctAnswers++;
@@ -1246,7 +1247,9 @@
                 q.options.forEach(option => {
                     if (q.answer.includes(option)) {
                         const input = Array.from(inputs).find(input => input.value === option && input.name === `question${index}`);
-                        input.parentElement.classList.add('correct');
+                        if (input) {
+                            input.parentElement.classList.add('correct');
+                        }
                     }
                 });
             });
